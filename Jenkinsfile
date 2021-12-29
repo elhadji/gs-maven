@@ -1,27 +1,22 @@
 pipeline {
-	agent none
-
-	triggers {
-		pollSCM 'H/10 * * * *'
-	}
-
-	options {
-		disableConcurrentBuilds()
-		buildDiscarder(logRotator(numToKeepStr: '14'))
-	}
-
+	agent any
+    tools {
+        maven 'Maven 3.3.9'
+        jdk 'jdk8'
+    }
 	stages {
-		stage("test: baseline (jdk8)") {
-			agent {
-				docker {
-					image 'adoptopenjdk/openjdk8:latest'
-					args '-v $HOME/.m2:/tmp/jenkins-home/.m2'
-				}
-			}
-			options { timeout(time: 30, unit: 'MINUTES') }
+		stage("Initialize ...") {
 			steps {
-				sh 'test/run.sh'
-			}
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                '''
+            }
+		}
+		stage ('Build') {
+			steps {
+                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+            }
 		}
 
 	}
