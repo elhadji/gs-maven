@@ -19,7 +19,7 @@ pipeline {
 		}
 		stage("Smoke Test"){
 			steps{
-				echo "====++++executing Smoke Test++++===="
+				sh 'mvn test'
 			}
 		}
 		stage("Sonar analysis"){
