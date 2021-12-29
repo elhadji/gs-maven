@@ -17,6 +17,20 @@ pipeline {
                 sh 'mvn -Dmaven.test.failure.ignore=true install' 
             }
 		}
-
+		stage("Smoke Test"){
+			steps{
+				echo "====++++executing Smoke Test++++===="
+			}
+		}
+		stage("Sonar analysis"){
+			steps{
+				echo "====++++Sonar analysis++++===="
+			}
+		}
+		stage("Deploy"){
+			steps{
+				echo "====++++Deploy++++===="
+			}
+		}
 	}
 }
