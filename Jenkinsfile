@@ -26,7 +26,7 @@ pipeline {
 		stage("Sonar analysis"){
 			steps{
 				echo "====++++Sonar analysis++++===="
-				sh 'mvn sonar:sonar'
+				sh 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=b2ca8da41bec62d8cad88de1eccaaacea13b9341'
 			}
 		}
 		stage("Deploy"){
