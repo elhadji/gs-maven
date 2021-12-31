@@ -3,6 +3,7 @@ pipeline {
     tools {
         maven 'maven'
         jdk 'jdk'
+		nodejs 'nodejs'
     }
 	stages {
 		stage("Initialize ...") {
@@ -19,7 +20,7 @@ pipeline {
 		}
 		stage("Smoke Test"){
 			steps{
-				sh 'mvn test'
+				sh 'mvn clean verify sonar:sonar'
 			}
 		}
 		stage("Sonar analysis"){
