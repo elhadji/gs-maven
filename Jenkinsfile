@@ -27,6 +27,10 @@ pipeline {
 			steps{
 				echo "====++++Sonar analysis++++===="
 				sh 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=b2ca8da41bec62d8cad88de1eccaaacea13b9341'
+			
+			timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
 			}
 		}
 		stage("Deploy"){
