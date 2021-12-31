@@ -23,16 +23,28 @@ pipeline {
 				sh 'mvn test'
 			}
 		}
-		stage("Sonar analysis"){
-			steps{
-				echo "====++++Sonar analysis++++===="
-				sh 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=b2ca8da41bec62d8cad88de1eccaaacea13b9341'
+		// stage("Sonar analysis"){
+		// 	steps{
+		// 		echo "====++++Sonar analysis++++===="
+		// 		sh 'mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=b2ca8da41bec62d8cad88de1eccaaacea13b9341'
 			
-			timeout(time: 10, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+		// 	timeout(time: 10, unit: 'MINUTES') {
+        //             waitForQualityGate abortPipeline: true
+        //         }
+		// 	}
+		// }
+		stage('Sonar analysis') {
+            environment {
+                scannerHome = tool 'SonarScanner'
+            }
+            steps {
+                withSonarQubeEnv('SonarServer') {
+                   withMaven(maven:'Maven 3.5') {
+                        sh 'mvn clean package sonar:sonar'
+                    }
                 }
-			}
-		}
+            }
+        }
 		stage("Deploy"){
 			steps{
 				echo "====++++Deploy++++===="
